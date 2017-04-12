@@ -31,6 +31,13 @@ int main() {
 
 	inputFile.open(customerFile.c_str());
 
+	if (inputFile.fail())
+	{
+		cout << "Could not open file " << customerFile << ". Program is ending" << endl;
+		cout << "Program ended with exit value: -1";
+		return -1;
+	}
+
 	while (true)
 	{
 		Customer *aCustomer = new Customer();
@@ -48,6 +55,13 @@ int main() {
 	inputFile.close();
 
 	inputFile.open(orderFile.c_str());
+
+	if (inputFile.fail())
+	{
+		cout << "Could not open file " << orderFile << ". Program is ending." << endl;
+		cout << "Program ended with exit value: -1";
+		return -1;
+	}
 
 	while (true)
 	{
@@ -75,6 +89,8 @@ int main() {
 	{
 		delete theOrders[i];
 	}//for
+
+	inputFile.close();
 
 	cout << "Program ending, have a nice day" << endl;
 	cout << "Program ended with exit value: 0" << endl;
