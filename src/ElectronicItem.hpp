@@ -12,7 +12,10 @@
 
 enum Type
 {
-
+	TV,
+	PS4,
+	DVDPLAYER,
+	PHONE
 };
 
 class ElectronicItem: public OrderItem {
@@ -23,8 +26,11 @@ public:
 
 	int getWarrantyMonths(void);
 	void setWarrantyMonths(int);
+	Type getElectronicType(void);
+	void setElectronicType(Type);
 private:
 	int WarrantyMonths;
+	Type ElectronicType;
 };
 
 #endif /* ELECTRONICITEM_HPP_ */

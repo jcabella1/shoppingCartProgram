@@ -9,6 +9,7 @@
 
 ElectronicItem::ElectronicItem() {
 	WarrantyMonths = 0;
+	ElectronicType = TV;
 }//default constructor
 
 ElectronicItem::~ElectronicItem() {
@@ -28,3 +29,12 @@ string ElectronicItem::whoAmI(void)
 {
 	return "electronicitem";
 }//whoAmI
+
+Type ElectronicItem::getElectronicType(void)
+{
+	return ElectronicType;
+}//getType
+void ElectronicItem::setElectronicType(Type theType)
+{
+	ElectronicType = theType;
+}//setType
