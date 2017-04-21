@@ -19,7 +19,8 @@ using namespace std;
 
 void readCustomerFile(ifstream &, vector<Customer*> &);
 void readOrderFile(ifstream &, vector<Order*> &, vector<Customer*>);
-void printOrder(vector<Order*>);
+void printAllOrders(vector<Order*>);
+void printOrder(vector<Order*>, string);
 
 int main(int argc, char *argv[]) {
 	vector<Customer*> theCustomers;
@@ -70,29 +71,24 @@ int main(int argc, char *argv[]) {
 	readOrderFile(inputFile2, theOrders, theCustomers);
 
 	//
-	// Prints all orders
+	// TODO: Commandline arguments
 	//
-	printOrder(theOrders);
+	if (argc == 1)
+	{
+		printAllOrders(theOrders);
+	}//if
+	else if (argc == 2)
+	{
 
-//	//
-//	// TODO: Commandline arguments
-//	//
-//	if (argc == 1)
-//	{
-//
-//	}//if
-//	else if (argc == 2)
-//	{
-//
-//	}//else if
-//	else
-//	{
-//		cout << "Error, you can only enter 2 arguments" << endl;
-//		cout << "Program is ending, have a nice day" << endl;
-//		cout << "Program ended with exit value: -1" << endl;
-//
-//		return -1;
-//	}//else
+	}//else if
+	else
+	{
+		cout << "Error, you can only enter 2 arguments" << endl;
+		cout << "Program is ending, have a nice day" << endl;
+		cout << "Program ended with exit value: -1" << endl;
+
+		return -1;
+	}//else
 
 
 	//
@@ -118,15 +114,8 @@ int main(int argc, char *argv[]) {
 
 void readCustomerFile(ifstream & inFile, vector<Customer*> &theCustomerVector)
 {
-	while (true)
+	while (inFile.good())
 	{
-
-		if (inFile.fail())
-		{
-			break;
-		}//if
-		else
-		{
 			string tempID;
 			string tempName;
 			string tempEmail;
@@ -145,22 +134,15 @@ void readCustomerFile(ifstream & inFile, vector<Customer*> &theCustomerVector)
 
 			theCustomerVector.push_back(aCustomer);
 		}//else
-	}//while
 }//readCustomerFile
 
 //
 // Read orders from the input stream
 //
-void readOrderFile(ifstream &inFile, vector<Order*> &theOrderVector, vector<Customer*> theCustomerVector)
+void readOrderFile(ifstream &inFile, vector<Order*> &theOrderVector, vector<Customer*> theCustomerVector, vector<OrderItem*> &theOrderItemVector)
 {
-	while (true)
+	while (inFile.good())
 	{
-		if (inFile.fail())
-		{
-			break;
-		}//if
-		else
-		{
 			string tempOrderNumber;
 			int tempYear;
 			int tempMonth;
@@ -184,28 +166,47 @@ void readOrderFile(ifstream &inFile, vector<Order*> &theOrderVector, vector<Cust
 					theOrderVector.push_back(tempOrder);
 				}//if
 			}//for
-
-		}//else
 	}//while
 
 }//readOrderFile
 
+//	TODO: Format print statements
+// 	TODO: Plug in items
+// 	Prints all orders
 //
-// Prints indicated order
-//
-void printOrder(vector<Order*> theOrderVector)
+void printAllOrders(vector<Order*> theOrderVector)
 {
-	cout << "Order Report" << endl;
+
+}//printAllOrders
+
+//
+// Prints the passed order with the matching order number
+//
+void printOrder(vector<Order*> theOrderVector, string theOrderNumber)
+{
 	for (unsigned int i = 0; i < theOrderVector.size(); i++)
 	{
 		cout << "=====================================" << endl;
-		cout << "Order ID" << setw(15) << "Customer ID" << setw(15) << "Order Date" << setw(20) << "Customer" << endl;
-		cout << "--------" << setw(15) << "-----------" << setw(15) << "----------" << endl;
+		cout << right << setw(25) << "Order ID" << setw(15) << "Customer ID" << setw(15) << "Order Date" << setw(20) << "Customer" << endl;
+		cout << right << setw(25) << "--------" << setw(15) << "-----------" << setw(15) << "----------" << setw(20) << "--------" << endl;
+		cout << endl;
 
-			cout << theOrderVector[i]->getOrderNumber() << setw(15)
+			cout << right << setw(25) << theOrderVector[i]->getOrderNumber() << setw(15)
 					<< theOrderVector[i]->getOrderCustomer()->getCustomerNumber() << setw(15)
-					<< theOrderVector[i]->getOrderDate().getDateString() << setw(15)
+					<< theOrderVector[i]->getOrderDate().getDateString() << setw(20)
 					<< theOrderVector[i]->getOrderCustomer()->getCustomerName() << endl;
+
+		for (unsigned int j = 0; j < theOrderVector[i]->getItemsInOrder().size(); j++)
+		{
+			cout << right  << setw(25) << "Food items ordered:" << setw(25) << "Item Number" << setw(25) << "Item Description" << setw(15) << "Calories" << setw(15) << "Cost" << endl;
+			cout << setw(50) << "-----------" << setw(25) << "----------------" << setw(15) << "--------" << setw(15) << "----" << endl;
+
+			cout << right << setw(25) << "Media items ordered:" << setw(25) << "Item Number" << setw(25) << "Item Description" << setw(15) << "ISBN" << setw(15) << "Cost" << endl;
+			cout << setw(50) << "-----------" << setw(25) << "----------------" << setw(15) << "----" << setw(15) << "----" << endl;
+
+			cout << right << setw(25) << "Electronic items ordered:" << setw(25) << "Item Number" << setw(25) << "Item Description" << setw(15) << "Warranty" << setw(15) << "Cost" << endl;
+			cout << setw(50) << "-----------" << setw(25) << "----------------" << setw(15) << "--------" << setw(15) << "----" << endl;
+		}//for
 	}//for
 
-}//printOrders
+}//printOrder

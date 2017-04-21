@@ -9,7 +9,7 @@
 
 Date::Date()
 {
-	cout << "Creating a Date Object" << endl;
+//	cout << "Creating a Date Object" << endl; //for debug purposes
 	Year = 1970;
 	Month = 1;
 	Day = 1;
@@ -90,6 +90,6 @@ Date::~Date() {
 	Year = 0;
 	Month = 0;
 	Day = 0;
-	cout << "Deleting a Date Object" << endl;
+//	cout << "Deleting a Date Object" << endl; // for debug purposes
 }
 

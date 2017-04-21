@@ -76,9 +76,9 @@ Date Order::getOrderDate(void)
 }//getOrderDate
 void Order::setOrderDate(int month, int day, int year)
 {
-	OrderDate.setMonth(1);
-	OrderDate.setDay(1);
-	OrderDate.setYear(1970);
+	OrderDate.setMonth(month);
+	OrderDate.setDay(day);
+	OrderDate.setYear(year);
 }//setOrderDate
 vector<OrderItem*> Order::getItemsInOrder(void)
 {
@@ -143,11 +143,15 @@ void Order::readFoodItems(ifstream &inFile)
 				tempFoodItem->setExpirationDate(tempExpirationYear, tempExpirationMonth, tempExpirationDay);
 
 				ItemsInOrder.push_back(tempFoodItem);
-			}
+			}//if
 
 		}//else
 	}//while
 }//readFoodItems
+
+//
+// Reads data from MediaItems.txt; ONLY adds items with the same OrderNumber
+//
 void Order::readMediaItems(ifstream &inFile)
 {
 	while (true)
@@ -172,26 +176,29 @@ void Order::readMediaItems(ifstream &inFile)
 			int tempYear;
 			string tempISBN;
 
-			MediaItem *tempMediaItem = new MediaItem();
-
 			inFile >> tempOrderNumber >> tempItemNumber >> tempItemDescription
 			>> tempQuantity >> tempCustomerCost >> tempVendorCost
 			>> tempTaxExempt >> tempYear >> tempMonth >> tempDay
 			>> tempAuthor >> tempISBN;
 
-			tempMediaItem->setOrderNumber(tempOrderNumber);
-			tempMediaItem->setItemNumber(tempItemNumber);
-			tempMediaItem->setItemDescription(tempItemDescription);
-			tempMediaItem->setQuantity(tempQuantity);
-			tempMediaItem->setCustomerCost(tempCustomerCost);
-			tempMediaItem->setVendorCost(tempVendorCost);
-			tempMediaItem->setTaxExempt(tempTaxExempt);
+			if (tempOrderNumber == OrderNumber)
+			{
+				MediaItem *tempMediaItem = new MediaItem();
 
-			tempMediaItem->setAuthorName(tempAuthor);
-			tempMediaItem->setPublicationDate(tempMonth, tempDay, tempYear);
-			tempMediaItem->setISBNNumber(tempISBN);
+				tempMediaItem->setOrderNumber(tempOrderNumber);
+				tempMediaItem->setItemNumber(tempItemNumber);
+				tempMediaItem->setItemDescription(tempItemDescription);
+				tempMediaItem->setQuantity(tempQuantity);
+				tempMediaItem->setCustomerCost(tempCustomerCost);
+				tempMediaItem->setVendorCost(tempVendorCost);
+				tempMediaItem->setTaxExempt(tempTaxExempt);
 
-			ItemsInOrder.push_back(tempMediaItem);
+				tempMediaItem->setAuthorName(tempAuthor);
+				tempMediaItem->setPublicationDate(tempMonth, tempDay, tempYear);
+				tempMediaItem->setISBNNumber(tempISBN);
+
+				ItemsInOrder.push_back(tempMediaItem);
+			}//if
 		}//else
 	}//while
 }//readMediaItems
@@ -216,24 +223,27 @@ void Order::readElectronicItems(ifstream &inFile)
 			int tempWarrantyMonths;
 			string tempType;
 
-			ElectronicItem *tempElectronicItem = new ElectronicItem();
-
 			inFile >> tempOrderNumber >> tempItemNumber >> tempItemDescription
 			>> tempQuantity >> tempCustomerCost >> tempVendorCost
 			>> tempTaxExempt >> tempWarrantyMonths >> tempType;
 
-			tempElectronicItem->setOrderNumber(tempOrderNumber);
-			tempElectronicItem->setItemNumber(tempItemNumber);
-			tempElectronicItem->setItemDescription(tempItemDescription);
-			tempElectronicItem->setQuantity(tempQuantity);
-			tempElectronicItem->setCustomerCost(tempCustomerCost);
-			tempElectronicItem->setVendorCost(tempVendorCost);
-			tempElectronicItem->setTaxExempt(tempTaxExempt);
+			if (tempOrderNumber == OrderNumber)
+			{
+				ElectronicItem *tempElectronicItem = new ElectronicItem();
 
-			tempElectronicItem->setElectronicType(tempType);
-			tempElectronicItem->setWarrantyMonths(tempWarrantyMonths);
+				tempElectronicItem->setOrderNumber(tempOrderNumber);
+				tempElectronicItem->setItemNumber(tempItemNumber);
+				tempElectronicItem->setItemDescription(tempItemDescription);
+				tempElectronicItem->setQuantity(tempQuantity);
+				tempElectronicItem->setCustomerCost(tempCustomerCost);
+				tempElectronicItem->setVendorCost(tempVendorCost);
+				tempElectronicItem->setTaxExempt(tempTaxExempt);
 
-			ItemsInOrder.push_back(tempElectronicItem);
+				tempElectronicItem->setElectronicType(tempType);
+				tempElectronicItem->setWarrantyMonths(tempWarrantyMonths);
+
+				ItemsInOrder.push_back(tempElectronicItem);
+			}
 		}//else
 	}//while
 }//readElectronicItems
