@@ -20,12 +20,12 @@ using namespace std;
 class Order {
 public:
 	Order();
-	Order(ifstream &foodFile, ifstream &mediaFile, ifstream &electronicFile);
+	Order(Customer *);
 	virtual ~Order();
 
-	bool readFoodItems(ifstream &);
-	bool readMediaItems(ifstream &);
-	bool readElectronicItems(ifstream &);
+	void readFoodItems(ifstream &);
+	void readMediaItems(ifstream &);
+	void readElectronicItems(ifstream &);
 	double getTotalOfOrder(void);
 
 	string getOrderNumber(void);
@@ -34,14 +34,14 @@ public:
 	void setOrderDate(int month, int day, int year);
 	vector<OrderItem*> getItemsInOrder(void);
 	void setItemsInOrder(OrderItem *);
-	Customer getOrderCustomer(void);
-	void setOrderCustomer(Customer);
+	Customer* getOrderCustomer(void);
+	void setOrderCustomer(Customer*);
 
 private:
 	string OrderNumber;
 	Date OrderDate;
 	vector<OrderItem*> ItemsInOrder;
-	Customer OrderCustomer;
+	Customer *OrderCustomer;
 
 };
 

@@ -18,45 +18,86 @@
 using namespace std;
 
 void readCustomerFile(ifstream &, vector<Customer*> &);
-void readOrderFile(ifstream &, vector<Order*> &);
-void printOrders(vector<Order*>);
+void readOrderFile(ifstream &, vector<Order*> &, vector<Customer*>);
+void printOrder(vector<Order*>);
 
 int main(int argc, char *argv[]) {
 	vector<Customer*> theCustomers;
 	vector<Order*> theOrders;
-	vector<OrderItem*> theOrderItems;
 
 	//file name variables
 	string orderFile = "OrderFile.txt";
 	string customerFile = "CustomerFile.txt";
 
-	ifstream inputFile;
+	//Create ifstream
+	ifstream inputFile1;
 
-	inputFile.open(customerFile.c_str());
+	//
+	//Open customers file
+	//
+	inputFile1.open(customerFile.c_str());
 
-	if (inputFile.fail())
+	if (inputFile1.fail())
 	{
-		cout << "Could not open file " << customerFile << ". Program is ending" << endl;
+		cout << "Could not open " << customerFile << ". Program is ending" << endl;
 		cout << "Program ended with exit value: -1";
 		return -1;
 	}//if
 
-	readCustomerFile(inputFile, theCustomers);
+	//
+	// Read info from customer file
+	//
+	readCustomerFile(inputFile1, theCustomers);
 
-	inputFile.close();
+	inputFile1.close();
 
-	inputFile.open(orderFile.c_str());
+	ifstream inputFile2;
 
-	if (inputFile.fail())
+	//
+	// Open Orders file
+	//
+	inputFile2.open(orderFile.c_str());
+	if (inputFile2.fail())
 	{
-		cout << "Could not open file " << orderFile << ". Program is ending." << endl;
+		cout << "Could not open " << orderFile << ". Program is ending." << endl;
 		cout << "Program ended with exit value: -1";
 		return -1;
 	}//if
 
-	readOrderFile(inputFile, theOrders);
+	//
+	// Now reading data from Orders file
+	//
+	readOrderFile(inputFile2, theOrders, theCustomers);
 
+	//
+	// Prints all orders
+	//
+	printOrder(theOrders);
+
+//	//
+//	// TODO: Commandline arguments
+//	//
+//	if (argc == 1)
+//	{
+//
+//	}//if
+//	else if (argc == 2)
+//	{
+//
+//	}//else if
+//	else
+//	{
+//		cout << "Error, you can only enter 2 arguments" << endl;
+//		cout << "Program is ending, have a nice day" << endl;
+//		cout << "Program ended with exit value: -1" << endl;
+//
+//		return -1;
+//	}//else
+
+
+	//
 	//delete all pointers
+	//
 	theCustomers.clear();
 	for (unsigned int i = 0; i < theCustomers.size(); i++)
 	{
@@ -68,7 +109,7 @@ int main(int argc, char *argv[]) {
 		delete theOrders[i];
 	}//for
 
-	inputFile.close();
+	inputFile2.close();
 
 	cout << "Program ending, have a nice day" << endl;
 	cout << "Program ended with exit value: 0" << endl;
@@ -78,7 +119,7 @@ int main(int argc, char *argv[]) {
 void readCustomerFile(ifstream & inFile, vector<Customer*> &theCustomerVector)
 {
 	while (true)
-		{
+	{
 
 		if (inFile.fail())
 		{
@@ -105,13 +146,12 @@ void readCustomerFile(ifstream & inFile, vector<Customer*> &theCustomerVector)
 			theCustomerVector.push_back(aCustomer);
 		}//else
 	}//while
-
 }//readCustomerFile
 
 //
 // Read orders from the input stream
 //
-void readOrderFile(ifstream &inFile, vector<Order*> &theOrderVector)
+void readOrderFile(ifstream &inFile, vector<Order*> &theOrderVector, vector<Customer*> theCustomerVector)
 {
 	while (true)
 	{
@@ -127,14 +167,23 @@ void readOrderFile(ifstream &inFile, vector<Order*> &theOrderVector)
 			int tempDay;
 			string tempCustomerID;
 
-			inFile >> tempOrderNumber >> tempYear >> tempMonth >> tempDay;
+			inFile >> tempOrderNumber >> tempYear >> tempMonth >> tempDay >> tempCustomerID;
 
-			Order *tempOrder = new Order();
+			//
+			//look for the customer ID in the customer vector and point to the customer
+			//
+			for (unsigned int i = 0; i < theCustomerVector.size(); i++)
+			{
+				if (theCustomerVector[i]->getCustomerNumber() == tempCustomerID)
+				{
+					Order *tempOrder = new Order(theCustomerVector[i]);
 
-			tempOrder->setOrderNumber(tempOrderNumber);
-			tempOrder->setOrderDate(tempDay, tempMonth, tempYear);
-			tempOrder->getOrderCustomer().setCustomerNumber(tempCustomerID);
-			theOrderVector.push_back(tempOrder);
+					tempOrder->setOrderNumber(tempOrderNumber);
+					tempOrder->setOrderDate(tempMonth, tempDay, tempYear);
+
+					theOrderVector.push_back(tempOrder);
+				}//if
+			}//for
 
 		}//else
 	}//while
@@ -142,14 +191,21 @@ void readOrderFile(ifstream &inFile, vector<Order*> &theOrderVector)
 }//readOrderFile
 
 //
-// Prints all of the orders
+// Prints indicated order
 //
-void printOrders(vector<Order*> theOrderVector)
+void printOrder(vector<Order*> theOrderVector)
 {
-	cout << setw(15) << "Order Number" << setw(15) << "Order Date" << setw(15) << "Customer Number" << endl;
-	for (int i = 0; i < theOrderVector.size(); i++)
+	cout << "Order Report" << endl;
+	for (unsigned int i = 0; i < theOrderVector.size(); i++)
 	{
-		cout << setw(15) << theOrderVector[i]->getOrderNumber << setw(15) << theOrderVector[i]->getOrderDate().getYear();
+		cout << "=====================================" << endl;
+		cout << "Order ID" << setw(15) << "Customer ID" << setw(15) << "Order Date" << setw(20) << "Customer" << endl;
+		cout << "--------" << setw(15) << "-----------" << setw(15) << "----------" << endl;
+
+			cout << theOrderVector[i]->getOrderNumber() << setw(15)
+					<< theOrderVector[i]->getOrderCustomer()->getCustomerNumber() << setw(15)
+					<< theOrderVector[i]->getOrderDate().getDateString() << setw(15)
+					<< theOrderVector[i]->getOrderCustomer()->getCustomerName() << endl;
 	}//for
 
 }//printOrders

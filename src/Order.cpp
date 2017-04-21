@@ -10,6 +10,7 @@
 #include <iomanip>
 
 Order::Order() {
+	cout << "Creating order" << endl;
 	string foodItemsFile = "FoodItems.txt";
 	string mediaItemsFile = "MediaItems.txt";
 	string electronicItemsFile = "ElectronicItems.txt";
@@ -28,12 +29,37 @@ Order::Order() {
 
 }//default constructor
 
+Order::Order(Customer *theCustomerPointer)
+{
+	OrderCustomer = theCustomerPointer;
+
+	cout << "Creating order" << endl;
+	string foodItemsFile = "FoodItems.txt";
+	string mediaItemsFile = "MediaItems.txt";
+	string electronicItemsFile = "ElectronicItems.txt";
+
+	ifstream inputFile;
+
+	inputFile.open(foodItemsFile.c_str());
+	readFoodItems(inputFile);
+	inputFile.close();
+	inputFile.open(mediaItemsFile.c_str());
+	readMediaItems(inputFile);
+	inputFile.close();
+	inputFile.open(electronicItemsFile.c_str());
+	readElectronicItems(inputFile);
+	inputFile.close();
+
+}//overloaded constructor
+
 Order::~Order() {
+	cout << "Deleting order" << endl;
 	for (unsigned int i = 0; i < ItemsInOrder.size(); i++)
 	{
 		delete ItemsInOrder[i];
 	}//for
 	ItemsInOrder.clear();
+	delete OrderCustomer;
 }//destructor
 
 string Order::getOrderNumber(void)
@@ -62,22 +88,22 @@ void Order::setItemsInOrder(OrderItem *anItem)
 {
 	ItemsInOrder.push_back(anItem);
 }//setItemsInOrder
-Customer Order::getOrderCustomer(void)
+Customer* Order::getOrderCustomer(void)
 {
 	return OrderCustomer;
 }//getOrderCustomer
-void Order::setOrderCustomer(Customer aCustomer)
+void Order::setOrderCustomer(Customer *aCustomer)
 {
 	OrderCustomer = aCustomer;
 }//setOrderCustomer
 
-bool Order::readFoodItems(ifstream &inFile)
+void Order::readFoodItems(ifstream &inFile)
 {
 	while (true)
 	{
 		if (inFile.fail())
 		{
-			return false;
+			break;
 		}//if
 		else
 		{
@@ -89,34 +115,46 @@ bool Order::readFoodItems(ifstream &inFile)
 			float tempVendorCost;
 			bool tempTaxExempt;
 
-			FoodItem *tempFoodItem = new FoodItem();
+			int tempExpirationYear;
+			int tempExpirationMonth;
+			int tempExpirationDay;
+			int tempCalories;
+			int tempFat;
 
 			inFile >> tempOrderNumber >> tempItemNumber >> tempItemDescription
-			>> tempQuantity >> tempCustomerCost >> tempVendorCost >> tempTaxExempt;
-			ItemsInOrder.push_back(tempFoodItem);
+			>> tempQuantity >> tempCustomerCost >> tempVendorCost >> tempTaxExempt
+			>> tempExpirationYear >> tempExpirationMonth >> tempExpirationDay
+			>> tempCalories >> tempFat;
 
-			tempFoodItem->setOrderNumber(tempOrderNumber);
-			tempFoodItem->setItemNumber(tempItemNumber);
-			tempFoodItem->setItemDescription(tempItemDescription);
-			tempFoodItem->setQuantity(tempQuantity);
-			tempFoodItem->setCustomerCost(tempCustomerCost);
-			tempFoodItem->setVendorCost(tempVendorCost);
-			tempFoodItem->setTaxExempt(tempTaxExempt);
+			if (tempOrderNumber == OrderNumber)
+			{
+				FoodItem *tempFoodItem = new FoodItem();
 
-			ItemsInOrder.push_back(tempFoodItem);
+				ItemsInOrder.push_back(tempFoodItem);
+
+				tempFoodItem->setOrderNumber(tempOrderNumber);
+				tempFoodItem->setItemNumber(tempItemNumber);
+				tempFoodItem->setItemDescription(tempItemDescription);
+				tempFoodItem->setQuantity(tempQuantity);
+				tempFoodItem->setCustomerCost(tempCustomerCost);
+				tempFoodItem->setVendorCost(tempVendorCost);
+				tempFoodItem->setTaxExempt(tempTaxExempt);
+
+				tempFoodItem->setExpirationDate(tempExpirationYear, tempExpirationMonth, tempExpirationDay);
+
+				ItemsInOrder.push_back(tempFoodItem);
+			}
 
 		}//else
 	}//while
-
-	return true;
 }//readFoodItems
-bool Order::readMediaItems(ifstream &inFile)
+void Order::readMediaItems(ifstream &inFile)
 {
 	while (true)
 	{
 		if (inFile.fail())
 		{
-			return false;
+			break;
 		}//if
 		else
 		{
@@ -154,19 +192,16 @@ bool Order::readMediaItems(ifstream &inFile)
 			tempMediaItem->setISBNNumber(tempISBN);
 
 			ItemsInOrder.push_back(tempMediaItem);
-
-			return true;
-
 		}//else
 	}//while
 }//readMediaItems
-bool Order::readElectronicItems(ifstream &inFile)
+void Order::readElectronicItems(ifstream &inFile)
 {
 	while (true)
 	{
 		if (inFile.fail())
 		{
-			return false;
+			break;
 		}//if
 		else
 		{
@@ -199,8 +234,6 @@ bool Order::readElectronicItems(ifstream &inFile)
 			tempElectronicItem->setWarrantyMonths(tempWarrantyMonths);
 
 			ItemsInOrder.push_back(tempElectronicItem);
-
-			return true;
 		}//else
 	}//while
 }//readElectronicItems
