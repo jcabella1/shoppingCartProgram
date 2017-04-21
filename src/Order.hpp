@@ -9,16 +9,18 @@
 #define ORDER_HPP_
 #include "Customer.hpp"
 #include "OrderItem.hpp"
+#include "FoodItem.hpp"
+#include "ElectronicItem.hpp"
+#include "MediaItem.hpp"
 #include <iostream>
 #include <vector>
 
 using namespace std;
 
-class OrderItem;
-
 class Order {
 public:
 	Order();
+	Order(ifstream &foodFile, ifstream &mediaFile, ifstream &electronicFile);
 	virtual ~Order();
 
 	bool readFoodItems(ifstream &);
@@ -32,11 +34,14 @@ public:
 	void setOrderDate(int month, int day, int year);
 	vector<OrderItem*> getItemsInOrder(void);
 	void setItemsInOrder(OrderItem *);
+	Customer getOrderCustomer(void);
+	void setOrderCustomer(Customer);
 
 private:
 	string OrderNumber;
 	Date OrderDate;
 	vector<OrderItem*> ItemsInOrder;
+	Customer OrderCustomer;
 
 };
 

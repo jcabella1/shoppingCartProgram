@@ -7,13 +7,17 @@
 
 #include "ElectronicItem.hpp"
 
-ElectronicItem::ElectronicItem() {
+ElectronicItem::ElectronicItem()
+{
+	cout << "Creating electronic item" << endl;
 	WarrantyMonths = 0;
-	ElectronicType = TV;
+	Type = TV;
 }//default constructor
 
-ElectronicItem::~ElectronicItem() {
-	WarrantyMonths = 0;
+ElectronicItem::~ElectronicItem()
+{
+	cout << "Deleting electronic item" << endl;
+
 }//destructor
 
 int ElectronicItem::getWarrantyMonths(void)
@@ -30,11 +34,30 @@ string ElectronicItem::whoAmI(void)
 	return "electronicitem";
 }//whoAmI
 
-Type ElectronicItem::getElectronicType(void)
+ElectronicType ElectronicItem::getElectronicType(void)
 {
-	return ElectronicType;
+	return Type;
 }//getType
-void ElectronicItem::setElectronicType(Type theType)
+void ElectronicItem::setElectronicType(ElectronicType theType)
 {
-	ElectronicType = theType;
-}//setType
+	Type = theType;
+}//setElectronicType
+void ElectronicItem::setElectronicType(string theString)
+{
+	if (theString == "TV")
+	{
+		Type = TV;
+	}//if
+	else if (theString == "PS4")
+	{
+		Type = PS4;
+	}//else if
+	else if (theString == "DVDPlayer")
+	{
+		Type = DVDPlayer;
+	}//else if
+	else if (theString == "Phone")
+	{
+		Type = PHONE;
+	}//else if
+}//setElectronicType

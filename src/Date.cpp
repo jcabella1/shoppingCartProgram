@@ -9,14 +9,14 @@
 
 Date::Date()
 {
-	cout << "You are creating a Date Object" << endl;
+	cout << "Creating a Date Object" << endl;
 	Year = 1970;
 	Month = 1;
 	Day = 1;
 }
 Date::Date(int theMonth, int theDay, int theYear)
 {
-	cout << "You are creating a Date Object" << endl;
+	cout << "Creating a Date Object" << endl;
 	Month = theMonth;
 	Day = theDay;
 	Year = theYear;
@@ -90,6 +90,6 @@ Date::~Date() {
 	Year = 0;
 	Month = 0;
 	Day = 0;
-	cout << "You are deleting a Date Object!" << endl;
+	cout << "Deleting a Date Object" << endl;
 }
 

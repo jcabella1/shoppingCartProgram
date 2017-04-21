@@ -9,6 +9,7 @@
 #define MEDIAITEM_HPP_
 
 #include "OrderItem.hpp"
+#include "Date.hpp"
 
 class MediaItem: public OrderItem {
 public:
