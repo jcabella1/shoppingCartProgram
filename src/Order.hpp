@@ -26,7 +26,7 @@ public:
 	void readFoodItems(ifstream &);
 	void readMediaItems(ifstream &);
 	void readElectronicItems(ifstream &);
-	double getTotalOfOrder(void);
+	float getTotalOfOrder(void);
 
 	string getOrderNumber(void);
 	void setOrderNumber(string);

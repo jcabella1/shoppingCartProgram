@@ -20,7 +20,7 @@ using namespace std;
 void readCustomerFile(ifstream &, vector<Customer*> &);
 void readOrderFile(ifstream &, vector<Order*> &, vector<Customer*>);
 void printAllOrders(vector<Order*>);
-void printOrder(vector<Order*>, string);
+void printOrder(Order*, string);
 
 int main(int argc, char *argv[]) {
 	vector<Customer*> theCustomers;
@@ -70,16 +70,19 @@ int main(int argc, char *argv[]) {
 	//
 	readOrderFile(inputFile2, theOrders, theCustomers);
 
-	//
-	// TODO: Commandline arguments
-	//
 	if (argc == 1)
 	{
 		printAllOrders(theOrders);
 	}//if
 	else if (argc == 2)
 	{
-
+		for (unsigned int i = 0; i < theOrders.size(); i++)
+	 	{
+			if (theOrders[i]->getOrderNumber() == argv[1])
+			{
+				printOrder(theOrders[i], argv[1]);
+			}
+		}//for
 	}//else if
 	else
 	{
@@ -89,7 +92,6 @@ int main(int argc, char *argv[]) {
 
 		return -1;
 	}//else
-
 
 	//
 	//delete all pointers
@@ -139,7 +141,7 @@ void readCustomerFile(ifstream & inFile, vector<Customer*> &theCustomerVector)
 //
 // Read orders from the input stream
 //
-void readOrderFile(ifstream &inFile, vector<Order*> &theOrderVector, vector<Customer*> theCustomerVector, vector<OrderItem*> &theOrderItemVector)
+void readOrderFile(ifstream &inFile, vector<Order*> &theOrderVector, vector<Customer*> theCustomerVector)
 {
 	while (inFile.good())
 	{
@@ -176,30 +178,35 @@ void readOrderFile(ifstream &inFile, vector<Order*> &theOrderVector, vector<Cust
 //
 void printAllOrders(vector<Order*> theOrderVector)
 {
-
+	for (unsigned int i = 0; i < theOrderVector.size(); i++)
+	{
+		printOrder(theOrderVector[i], theOrderVector[i]->getOrderNumber());
+	}//for
 }//printAllOrders
 
 //
 // Prints the passed order with the matching order number
 //
-void printOrder(vector<Order*> theOrderVector, string theOrderNumber)
+void printOrder(Order* theOrderPointer, string theOrderNumber)
 {
-	for (unsigned int i = 0; i < theOrderVector.size(); i++)
-	{
-		cout << "=====================================" << endl;
+	cout << endl;
+		cout << "========================================" << endl;
 		cout << right << setw(25) << "Order ID" << setw(15) << "Customer ID" << setw(15) << "Order Date" << setw(20) << "Customer" << endl;
 		cout << right << setw(25) << "--------" << setw(15) << "-----------" << setw(15) << "----------" << setw(20) << "--------" << endl;
-		cout << endl;
 
-			cout << right << setw(25) << theOrderVector[i]->getOrderNumber() << setw(15)
-					<< theOrderVector[i]->getOrderCustomer()->getCustomerNumber() << setw(15)
-					<< theOrderVector[i]->getOrderDate().getDateString() << setw(20)
-					<< theOrderVector[i]->getOrderCustomer()->getCustomerName() << endl;
+			cout << right << setw(25) << theOrderPointer->getOrderNumber() << setw(15)
+					<< theOrderPointer->getOrderCustomer()->getCustomerNumber() << setw(15)
+					<< theOrderPointer->getOrderDate().getDateString() << setw(20)
+					<< theOrderPointer->getOrderCustomer()->getCustomerName() << endl;
 
-		for (unsigned int j = 0; j < theOrderVector[i]->getItemsInOrder().size(); j++)
+		for (unsigned int i = 0; i < theOrderPointer->getItemsInOrder().size(); i++)
 		{
 			cout << right  << setw(25) << "Food items ordered:" << setw(25) << "Item Number" << setw(25) << "Item Description" << setw(15) << "Calories" << setw(15) << "Cost" << endl;
 			cout << setw(50) << "-----------" << setw(25) << "----------------" << setw(15) << "--------" << setw(15) << "----" << endl;
+			if (theOrderPointer->getItemsInOrder()[i]->getOrderNumber() == theOrderNumber)
+			{
+				cout << right << setw(50) << theOrderPointer->getItemsInOrder()[i]->getItemNumber() << endl;
+			}//if
 
 			cout << right << setw(25) << "Media items ordered:" << setw(25) << "Item Number" << setw(25) << "Item Description" << setw(15) << "ISBN" << setw(15) << "Cost" << endl;
 			cout << setw(50) << "-----------" << setw(25) << "----------------" << setw(15) << "----" << setw(15) << "----" << endl;
@@ -207,6 +214,7 @@ void printOrder(vector<Order*> theOrderVector, string theOrderNumber)
 			cout << right << setw(25) << "Electronic items ordered:" << setw(25) << "Item Number" << setw(25) << "Item Description" << setw(15) << "Warranty" << setw(15) << "Cost" << endl;
 			cout << setw(50) << "-----------" << setw(25) << "----------------" << setw(15) << "--------" << setw(15) << "----" << endl;
 		}//for
-	}//for
+
+		cout << "Total for this order will be: " << theOrderPointer->getTotalOfOrder() << endl;
 
 }//printOrder

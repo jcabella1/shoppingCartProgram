@@ -227,7 +227,7 @@ void Order::readElectronicItems(ifstream &inFile)
 			>> tempQuantity >> tempCustomerCost >> tempVendorCost
 			>> tempTaxExempt >> tempWarrantyMonths >> tempType;
 
-			if (tempOrderNumber == OrderNumber)
+			if (tempOrderNumber == this->OrderNumber)
 			{
 				ElectronicItem *tempElectronicItem = new ElectronicItem();
 
@@ -248,9 +248,9 @@ void Order::readElectronicItems(ifstream &inFile)
 	}//while
 }//readElectronicItems
 
-double Order::getTotalOfOrder(void)
+float Order::getTotalOfOrder(void)
 {
-	double total;
+	float total;
 	for (unsigned int i = 0; i < ItemsInOrder.size(); i++)
 	{
 		total += ItemsInOrder[i]->getCustomerCost() * ItemsInOrder[i]->getQuantity();
