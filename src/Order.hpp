@@ -20,13 +20,13 @@ using namespace std;
 class Order {
 public:
 	Order();
-	Order(Customer *);
+	Order(string, Customer *);
 	virtual ~Order();
 
 	void readFoodItems(ifstream &);
 	void readMediaItems(ifstream &);
 	void readElectronicItems(ifstream &);
-	float getTotalOfOrder(void);
+	double getTotalOfOrder(void);
 
 	string getOrderNumber(void);
 	void setOrderNumber(string);

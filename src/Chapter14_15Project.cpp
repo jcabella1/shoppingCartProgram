@@ -14,6 +14,7 @@
 #include <vector>
 #include <iomanip>
 #include "Order.hpp"
+#include "OrderItem.hpp"
 #include "Customer.hpp"
 using namespace std;
 
@@ -26,11 +27,15 @@ int main(int argc, char *argv[]) {
 	vector<Customer*> theCustomers;
 	vector<Order*> theOrders;
 
+	//
 	//file name variables
+	//
 	string orderFile = "OrderFile.txt";
 	string customerFile = "CustomerFile.txt";
 
+	//
 	//Create ifstream
+	//
 	ifstream inputFile1;
 
 	//
@@ -81,7 +86,7 @@ int main(int argc, char *argv[]) {
 			if (theOrders[i]->getOrderNumber() == argv[1])
 			{
 				printOrder(theOrders[i], argv[1]);
-			}
+			}//if
 		}//for
 	}//else if
 	else
@@ -160,13 +165,13 @@ void readOrderFile(ifstream &inFile, vector<Order*> &theOrderVector, vector<Cust
 			{
 				if (theCustomerVector[i]->getCustomerNumber() == tempCustomerID)
 				{
-					Order *tempOrder = new Order(theCustomerVector[i]);
+					Order *tempOrder = new Order(tempOrderNumber, theCustomerVector[i]);
 
-					tempOrder->setOrderNumber(tempOrderNumber);
 					tempOrder->setOrderDate(tempMonth, tempDay, tempYear);
 
 					theOrderVector.push_back(tempOrder);
 				}//if
+
 			}//for
 	}//while
 
@@ -189,32 +194,71 @@ void printAllOrders(vector<Order*> theOrderVector)
 //
 void printOrder(Order* theOrderPointer, string theOrderNumber)
 {
-	cout << endl;
+	cout << setprecision(2) << showpoint << fixed;
+		cout << endl;
 		cout << "========================================" << endl;
 		cout << right << setw(25) << "Order ID" << setw(15) << "Customer ID" << setw(15) << "Order Date" << setw(20) << "Customer" << endl;
 		cout << right << setw(25) << "--------" << setw(15) << "-----------" << setw(15) << "----------" << setw(20) << "--------" << endl;
-
-			cout << right << setw(25) << theOrderPointer->getOrderNumber() << setw(15)
+		cout << right << setw(25) << theOrderPointer->getOrderNumber() << setw(15)
 					<< theOrderPointer->getOrderCustomer()->getCustomerNumber() << setw(15)
 					<< theOrderPointer->getOrderDate().getDateString() << setw(20)
 					<< theOrderPointer->getOrderCustomer()->getCustomerName() << endl;
+		cout << endl;
+
+		//
+		// Print out food items
+		//
+		cout << right  << setw(25) << "Food items ordered:" << setw(25) << "Item Number" << setw(25) << "Item Description" << setw(15) << "Calories" << setw(15) << "Cost" << endl;
+		cout << setw(50) << "-----------" << setw(25) << "----------------" << setw(15) << "--------" << setw(15) << "----" << endl;
+		for (unsigned int i = 0; i < theOrderPointer->getItemsInOrder().size(); i++)
+		{
+			if (theOrderPointer->getItemsInOrder()[i]->whoAmI() == "fooditem")
+			{
+				cout << right << setw(50) << theOrderPointer->getItemsInOrder()[i]->getItemNumber() << setw(25)
+						<< theOrderPointer->getItemsInOrder()[i]->getItemDescription() << setw(15)
+						<< theOrderPointer->getItemsInOrder()[i]->getCalories()
+						<< theOrderPointer->getItemsInOrder()[i]->getCustomerCost() << endl;
+			}//if
+			else { } // do nothing
+		}//for
+
+		//
+		// Print out media items
+		//
+		cout << right << setw(25) << "Media items ordered:" << setw(25) << "Item Number" << setw(25) << "Item Description" << setw(15) << "ISBN" << setw(15) << "Cost" << endl;
+		cout << setw(50) << "-----------" << setw(25) << "----------------" << setw(15) << "----" << setw(15) << "----" << endl;
+		for (unsigned int i = 0; i < theOrderPointer->getItemsInOrder().size(); i++)
+		{
+			if (theOrderPointer->getItemsInOrder()[i]->whoAmI() == "mediaitem")
+			{
+				cout << right << setw(50) << theOrderPointer->getItemsInOrder()[i]->getItemNumber() << setw(25)
+					<< theOrderPointer->getItemsInOrder()[i]->getItemDescription() << setw(15)
+					<< theOrderPointer->getItemsInOrder()[i]->getISBNNumber() << setw(15)
+					<< theOrderPointer->getItemsInOrder()[i]->getCustomerCost() << endl;
+			}
+			else { } //do nothing
+
+		}//for
+
+		//
+		// Print out electronic items
+		//
+		cout << right << setw(25) << "Electronic items ordered:" << setw(25) << "Item Number" << setw(25) << "Item Description" << setw(15) << "Warranty" << setw(15) << "Cost" << endl;
+		cout << setw(50) << "-----------" << setw(25) << "----------------" << setw(15) << "--------" << setw(15) << "----" << endl;
 
 		for (unsigned int i = 0; i < theOrderPointer->getItemsInOrder().size(); i++)
 		{
-			cout << right  << setw(25) << "Food items ordered:" << setw(25) << "Item Number" << setw(25) << "Item Description" << setw(15) << "Calories" << setw(15) << "Cost" << endl;
-			cout << setw(50) << "-----------" << setw(25) << "----------------" << setw(15) << "--------" << setw(15) << "----" << endl;
-			if (theOrderPointer->getItemsInOrder()[i]->getOrderNumber() == theOrderNumber)
+			if (theOrderPointer->getItemsInOrder()[i]->whoAmI() == "electronicitem")
 			{
-				cout << right << setw(50) << theOrderPointer->getItemsInOrder()[i]->getItemNumber() << endl;
-			}//if
+				cout << right << setw(50) << theOrderPointer->getItemsInOrder()[i]->getItemNumber() << setw(25)
+					<< theOrderPointer->getItemsInOrder()[i]->getItemDescription() << setw(15)
+					<< theOrderPointer->getItemsInOrder()[i]->getWarrantyMonths() << setw(15)
+					<< theOrderPointer->getItemsInOrder()[i]->getCustomerCost() << endl;
+			}
+			else { } //do nothing
 
-			cout << right << setw(25) << "Media items ordered:" << setw(25) << "Item Number" << setw(25) << "Item Description" << setw(15) << "ISBN" << setw(15) << "Cost" << endl;
-			cout << setw(50) << "-----------" << setw(25) << "----------------" << setw(15) << "----" << setw(15) << "----" << endl;
-
-			cout << right << setw(25) << "Electronic items ordered:" << setw(25) << "Item Number" << setw(25) << "Item Description" << setw(15) << "Warranty" << setw(15) << "Cost" << endl;
-			cout << setw(50) << "-----------" << setw(25) << "----------------" << setw(15) << "--------" << setw(15) << "----" << endl;
 		}//for
 
-		cout << "Total for this order will be: " << theOrderPointer->getTotalOfOrder() << endl;
+		cout << "Total for this order will be: $" << theOrderPointer->getTotalOfOrder() << endl;
 
 }//printOrder

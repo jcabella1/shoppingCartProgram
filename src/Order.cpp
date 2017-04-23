@@ -10,45 +10,52 @@
 #include <iomanip>
 
 Order::Order() {
+//	OrderCustomer = nullptr;
+
 	cout << "Creating order" << endl;
 	string foodItemsFile = "FoodItems.txt";
 	string mediaItemsFile = "MediaItems.txt";
 	string electronicItemsFile = "ElectronicItems.txt";
 
-	ifstream inputFile;
+	ifstream inputFile1;
+	ifstream inputFile2;
+	ifstream inputFile3;
 
-	inputFile.open(foodItemsFile.c_str());
-	readFoodItems(inputFile);
-	inputFile.close();
-	inputFile.open(mediaItemsFile.c_str());
-	readMediaItems(inputFile);
-	inputFile.close();
-	inputFile.open(electronicItemsFile.c_str());
-	readElectronicItems(inputFile);
-	inputFile.close();
+	inputFile1.open(foodItemsFile.c_str());
+	readFoodItems(inputFile1);
+	inputFile1.close();
+	inputFile2.open(mediaItemsFile.c_str());
+	readMediaItems(inputFile2);
+	inputFile2.close();
+	inputFile3.open(electronicItemsFile.c_str());
+	readElectronicItems(inputFile3);
+	inputFile3.close();
 
 }//default constructor
 
-Order::Order(Customer *theCustomerPointer)
+Order::Order(string orderNum, Customer *theCustomerPointer)
 {
 	OrderCustomer = theCustomerPointer;
+	OrderNumber = orderNum;
 
 	cout << "Creating order" << endl;
 	string foodItemsFile = "FoodItems.txt";
 	string mediaItemsFile = "MediaItems.txt";
 	string electronicItemsFile = "ElectronicItems.txt";
 
-	ifstream inputFile;
+	ifstream inputFile1;
+	ifstream inputFile2;
+	ifstream inputFile3;
 
-	inputFile.open(foodItemsFile.c_str());
-	readFoodItems(inputFile);
-	inputFile.close();
-	inputFile.open(mediaItemsFile.c_str());
-	readMediaItems(inputFile);
-	inputFile.close();
-	inputFile.open(electronicItemsFile.c_str());
-	readElectronicItems(inputFile);
-	inputFile.close();
+	inputFile1.open(foodItemsFile.c_str());
+	readFoodItems(inputFile1);
+	inputFile1.close();
+	inputFile2.open(mediaItemsFile.c_str());
+	readMediaItems(inputFile2);
+	inputFile2.close();
+	inputFile3.open(electronicItemsFile.c_str());
+	readElectronicItems(inputFile3);
+	inputFile3.close();
 
 }//overloaded constructor
 
@@ -99,21 +106,15 @@ void Order::setOrderCustomer(Customer *aCustomer)
 
 void Order::readFoodItems(ifstream &inFile)
 {
-	while (true)
+	while (inFile.good())
 	{
-		if (inFile.fail())
-		{
-			break;
-		}//if
-		else
-		{
 			string tempOrderNumber;
 			string tempItemNumber;
 			string tempItemDescription;
 			int tempQuantity;
-			float tempCustomerCost;
-			float tempVendorCost;
-			bool tempTaxExempt;
+			double tempCustomerCost;
+			double tempVendorCost;
+			char tempTaxExempt;
 
 			int tempExpirationYear;
 			int tempExpirationMonth;
@@ -126,7 +127,7 @@ void Order::readFoodItems(ifstream &inFile)
 			>> tempExpirationYear >> tempExpirationMonth >> tempExpirationDay
 			>> tempCalories >> tempFat;
 
-			if (tempOrderNumber == OrderNumber)
+			if (tempOrderNumber == this->OrderNumber)
 			{
 				FoodItem *tempFoodItem = new FoodItem();
 
@@ -144,8 +145,6 @@ void Order::readFoodItems(ifstream &inFile)
 
 				ItemsInOrder.push_back(tempFoodItem);
 			}//if
-
-		}//else
 	}//while
 }//readFoodItems
 
@@ -154,21 +153,15 @@ void Order::readFoodItems(ifstream &inFile)
 //
 void Order::readMediaItems(ifstream &inFile)
 {
-	while (true)
+	while (inFile.good())
 	{
-		if (inFile.fail())
-		{
-			break;
-		}//if
-		else
-		{
 			string tempOrderNumber;
 			string tempItemNumber;
 			string tempItemDescription;
 			int tempQuantity;
-			float tempCustomerCost;
-			float tempVendorCost;
-			bool tempTaxExempt;
+			double tempCustomerCost;
+			double tempVendorCost;
+			char tempTaxExempt;
 
 			string tempAuthor;
 			int tempMonth;
@@ -181,7 +174,7 @@ void Order::readMediaItems(ifstream &inFile)
 			>> tempTaxExempt >> tempYear >> tempMonth >> tempDay
 			>> tempAuthor >> tempISBN;
 
-			if (tempOrderNumber == OrderNumber)
+			if (tempOrderNumber == this->OrderNumber)
 			{
 				MediaItem *tempMediaItem = new MediaItem();
 
@@ -199,26 +192,19 @@ void Order::readMediaItems(ifstream &inFile)
 
 				ItemsInOrder.push_back(tempMediaItem);
 			}//if
-		}//else
 	}//while
 }//readMediaItems
 void Order::readElectronicItems(ifstream &inFile)
 {
-	while (true)
+	while (inFile.good())
 	{
-		if (inFile.fail())
-		{
-			break;
-		}//if
-		else
-		{
 			string tempOrderNumber;
 			string tempItemNumber;
 			string tempItemDescription;
 			int tempQuantity;
-			float tempCustomerCost;
-			float tempVendorCost;
-			bool tempTaxExempt;
+			double tempCustomerCost;
+			double tempVendorCost;
+			char tempTaxExempt;
 
 			int tempWarrantyMonths;
 			string tempType;
@@ -243,14 +229,16 @@ void Order::readElectronicItems(ifstream &inFile)
 				tempElectronicItem->setWarrantyMonths(tempWarrantyMonths);
 
 				ItemsInOrder.push_back(tempElectronicItem);
-			}
-		}//else
+			}//if
 	}//while
 }//readElectronicItems
 
-float Order::getTotalOfOrder(void)
+double Order::getTotalOfOrder(void)
 {
-	float total;
+	double total;
+
+	cout << setprecision(2);
+
 	for (unsigned int i = 0; i < ItemsInOrder.size(); i++)
 	{
 		total += ItemsInOrder[i]->getCustomerCost() * ItemsInOrder[i]->getQuantity();

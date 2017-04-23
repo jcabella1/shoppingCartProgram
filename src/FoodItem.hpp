@@ -19,7 +19,7 @@ public:
 
 	Date getExpirationDate(void);
 	void setExpirationDate(int month, int day, int year);
-	int getCalories(void);
+	 virtual int getCalories(void);
 	void setCalories(int);
 	int getFat(void);
 	void setFat(int);
