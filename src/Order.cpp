@@ -10,7 +10,7 @@
 #include <iomanip>
 
 Order::Order() {
-//	OrderCustomer = nullptr;
+	OrderCustomer = nullptr;
 
 	cout << "Creating order" << endl;
 	string foodItemsFile = "FoodItems.txt";
@@ -61,11 +61,11 @@ Order::Order(string orderNum, Customer *theCustomerPointer)
 
 Order::~Order() {
 	cout << "Deleting order" << endl;
-	for (unsigned int i = 0; i < ItemsInOrder.size(); i++)
-	{
-		delete ItemsInOrder[i];
-	}//for
-	ItemsInOrder.clear();
+//	for (unsigned int i = 0; i < ItemsInOrder.size(); i++)
+//	{
+//		delete ItemsInOrder[i];
+//	}//for
+//	ItemsInOrder.clear();
 	delete OrderCustomer;
 }//destructor
 
@@ -87,13 +87,13 @@ void Order::setOrderDate(int month, int day, int year)
 	OrderDate.setDay(day);
 	OrderDate.setYear(year);
 }//setOrderDate
-vector<OrderItem*> Order::getItemsInOrder(void)
+vector<unique_ptr<OrderItem>> Order::getItemsInOrder(void)
 {
 	return ItemsInOrder;
 }//getItemsInOrder
-void Order::setItemsInOrder(OrderItem *anItem)
+void Order::setItemsInOrder(unique_ptr<OrderItem> anItem)
 {
-	ItemsInOrder.push_back(anItem);
+	ItemsInOrder.push_back(move(anItem));
 }//setItemsInOrder
 Customer* Order::getOrderCustomer(void)
 {
@@ -129,7 +129,7 @@ void Order::readFoodItems(ifstream &inFile)
 
 			if (tempOrderNumber == this->OrderNumber)
 			{
-				FoodItem *tempFoodItem = new FoodItem();
+				unique_ptr<FoodItem> tempFoodItem(new FoodItem());
 				for (int i = 0; i < tempQuantity; i++)
 				{
 					tempFoodItem->setOrderNumber(tempOrderNumber);
@@ -142,7 +142,7 @@ void Order::readFoodItems(ifstream &inFile)
 
 					tempFoodItem->setExpirationDate(tempExpirationYear, tempExpirationMonth, tempExpirationDay);
 				}//for
-				ItemsInOrder.push_back(tempFoodItem);
+				ItemsInOrder.push_back(move(tempFoodItem));
 			}//if
 	}//while
 }//readFoodItems
@@ -175,7 +175,7 @@ void Order::readMediaItems(ifstream &inFile)
 
 			if (tempOrderNumber == this->OrderNumber)
 			{
-				MediaItem *tempMediaItem = new MediaItem();
+				unique_ptr<MediaItem> tempMediaItem(new MediaItem());
 
 				for (int i = 0; i < tempQuantity; i++)
 				{
@@ -193,7 +193,7 @@ void Order::readMediaItems(ifstream &inFile)
 
 				}//for
 
-				ItemsInOrder.push_back(tempMediaItem);
+				ItemsInOrder.push_back(move(tempMediaItem));
 			}//if
 	}//while
 }//readMediaItems
@@ -218,7 +218,7 @@ void Order::readElectronicItems(ifstream &inFile)
 
 			if (tempOrderNumber == this->OrderNumber)
 			{
-				ElectronicItem *tempElectronicItem = new ElectronicItem();
+				unique_ptr<ElectronicItem> tempElectronicItem(new ElectronicItem());
 
 				for (int i = 0; i < tempQuantity; i++)
 				{
@@ -235,7 +235,7 @@ void Order::readElectronicItems(ifstream &inFile)
 
 				}//for
 
-				ItemsInOrder.push_back(tempElectronicItem);
+				ItemsInOrder.push_back(move(tempElectronicItem));
 			}//if
 	}//while
 }//readElectronicItems

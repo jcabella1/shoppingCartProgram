@@ -14,6 +14,7 @@
 #include "MediaItem.hpp"
 #include <iostream>
 #include <vector>
+#include <memory>
 
 using namespace std;
 
@@ -32,15 +33,15 @@ public:
 	void setOrderNumber(string);
 	Date getOrderDate(void);
 	void setOrderDate(int month, int day, int year);
-	vector<OrderItem*> getItemsInOrder(void);
-	void setItemsInOrder(OrderItem *);
+	vector<unique_ptr<OrderItem>> getItemsInOrder(void);
+	void setItemsInOrder(unique_ptr<OrderItem>);
 	Customer* getOrderCustomer(void);
 	void setOrderCustomer(Customer*);
 
 private:
 	string OrderNumber;
 	Date OrderDate;
-	vector<OrderItem*> ItemsInOrder;
+	vector<unique_ptr<OrderItem>> ItemsInOrder;
 	Customer *OrderCustomer;
 
 };

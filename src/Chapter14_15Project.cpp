@@ -3,7 +3,7 @@
 //Project Description: A shopping cart program -- reads to and from simple text files
 //Project Author: Abella, Jenny
 //Is this an extra credit Project:  No
-//Date completed: 04/25/2017
+//Date completed: 04/27/2017
 //Operating system used: Windows 10
 //IDE Used:  Eclipse Neon
 
@@ -12,6 +12,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <memory>
 #include <iomanip>
 #include "Order.hpp"
 #include "OrderItem.hpp"
@@ -171,16 +172,14 @@ void readOrderFile(ifstream &inFile, vector<Order*> &theOrderVector, vector<Cust
 
 					theOrderVector.push_back(tempOrder);
 				}//if
-				// Eclipse was being very annoying with this error, so I commented this block of code out
-				// I do have the C++11 settings set up, however.
-//				else
-//				{
-//					Order *tempOrder = new Order(tempOrderNumber, nullptr);
-//
-//					tempOrder->setOrderDate(tempMonth, tempDay, tempYear);
-//
-//					theOrderVector.push_back(tempOrder);
-//				}
+				else
+				{
+					Order *tempOrder = new Order(tempOrderNumber, nullptr);
+
+					tempOrder->setOrderDate(tempMonth, tempDay, tempYear);
+
+					theOrderVector.push_back(tempOrder);
+				}
 
 			}//for
 	}//while
@@ -225,7 +224,7 @@ void printOrder(Order* theOrderPointer, string theOrderNumber)
 			{
 				cout << right << setw(50) << theOrderPointer->getItemsInOrder()[i]->getItemNumber() << setw(25)
 						<< theOrderPointer->getItemsInOrder()[i]->getItemDescription() << setw(15)
-//						<< theOrderPointer->getItemsInOrder()[i]->getCalories()
+						<< theOrderPointer->getItemsInOrder()[i]->getCalories() << setw(15)
 						<< theOrderPointer->getItemsInOrder()[i]->getCustomerCost() << endl;
 			}//if
 			else { } // do nothing
@@ -242,7 +241,7 @@ void printOrder(Order* theOrderPointer, string theOrderNumber)
 			{
 				cout << right << setw(50) << theOrderPointer->getItemsInOrder()[i]->getItemNumber() << setw(25)
 					<< theOrderPointer->getItemsInOrder()[i]->getItemDescription() << setw(15)
-//					<< theOrderPointer->getItemsInOrder()[i]->getISBNNumber() << setw(15)
+					<< theOrderPointer->getItemsInOrder()[i]->getISBNNumber() << setw(15)
 					<< theOrderPointer->getItemsInOrder()[i]->getCustomerCost() << endl;
 			}
 			else { } //do nothing
@@ -261,7 +260,7 @@ void printOrder(Order* theOrderPointer, string theOrderNumber)
 			{
 				cout << right << setw(50) << theOrderPointer->getItemsInOrder()[i]->getItemNumber() << setw(25)
 					<< theOrderPointer->getItemsInOrder()[i]->getItemDescription() << setw(15)
-//					<< theOrderPointer->getItemsInOrder()[i]->getWarrantyMonths() << setw(15)
+					<< theOrderPointer->getItemsInOrder()[i]->getWarrantyMonths() << setw(15)
 					<< theOrderPointer->getItemsInOrder()[i]->getCustomerCost() << endl;
 			}
 			else { } //do nothing
