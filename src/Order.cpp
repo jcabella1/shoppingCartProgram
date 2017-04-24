@@ -130,19 +130,18 @@ void Order::readFoodItems(ifstream &inFile)
 			if (tempOrderNumber == this->OrderNumber)
 			{
 				FoodItem *tempFoodItem = new FoodItem();
+				for (int i = 0; i < tempQuantity; i++)
+				{
+					tempFoodItem->setOrderNumber(tempOrderNumber);
+					tempFoodItem->setItemNumber(tempItemNumber);
+					tempFoodItem->setItemDescription(tempItemDescription);
+					tempFoodItem->setQuantity(tempQuantity);
+					tempFoodItem->setCustomerCost(tempCustomerCost);
+					tempFoodItem->setVendorCost(tempVendorCost);
+					tempFoodItem->setTaxExempt(tempTaxExempt);
 
-				ItemsInOrder.push_back(tempFoodItem);
-
-				tempFoodItem->setOrderNumber(tempOrderNumber);
-				tempFoodItem->setItemNumber(tempItemNumber);
-				tempFoodItem->setItemDescription(tempItemDescription);
-				tempFoodItem->setQuantity(tempQuantity);
-				tempFoodItem->setCustomerCost(tempCustomerCost);
-				tempFoodItem->setVendorCost(tempVendorCost);
-				tempFoodItem->setTaxExempt(tempTaxExempt);
-
-				tempFoodItem->setExpirationDate(tempExpirationYear, tempExpirationMonth, tempExpirationDay);
-
+					tempFoodItem->setExpirationDate(tempExpirationYear, tempExpirationMonth, tempExpirationDay);
+				}//for
 				ItemsInOrder.push_back(tempFoodItem);
 			}//if
 	}//while
@@ -178,17 +177,21 @@ void Order::readMediaItems(ifstream &inFile)
 			{
 				MediaItem *tempMediaItem = new MediaItem();
 
-				tempMediaItem->setOrderNumber(tempOrderNumber);
-				tempMediaItem->setItemNumber(tempItemNumber);
-				tempMediaItem->setItemDescription(tempItemDescription);
-				tempMediaItem->setQuantity(tempQuantity);
-				tempMediaItem->setCustomerCost(tempCustomerCost);
-				tempMediaItem->setVendorCost(tempVendorCost);
-				tempMediaItem->setTaxExempt(tempTaxExempt);
+				for (int i = 0; i < tempQuantity; i++)
+				{
+					tempMediaItem->setOrderNumber(tempOrderNumber);
+					tempMediaItem->setItemNumber(tempItemNumber);
+					tempMediaItem->setItemDescription(tempItemDescription);
+					tempMediaItem->setQuantity(tempQuantity);
+					tempMediaItem->setCustomerCost(tempCustomerCost);
+					tempMediaItem->setVendorCost(tempVendorCost);
+					tempMediaItem->setTaxExempt(tempTaxExempt);
 
-				tempMediaItem->setAuthorName(tempAuthor);
-				tempMediaItem->setPublicationDate(tempMonth, tempDay, tempYear);
-				tempMediaItem->setISBNNumber(tempISBN);
+					tempMediaItem->setAuthorName(tempAuthor);
+					tempMediaItem->setPublicationDate(tempMonth, tempDay, tempYear);
+					tempMediaItem->setISBNNumber(tempISBN);
+
+				}//for
 
 				ItemsInOrder.push_back(tempMediaItem);
 			}//if
@@ -217,16 +220,20 @@ void Order::readElectronicItems(ifstream &inFile)
 			{
 				ElectronicItem *tempElectronicItem = new ElectronicItem();
 
-				tempElectronicItem->setOrderNumber(tempOrderNumber);
-				tempElectronicItem->setItemNumber(tempItemNumber);
-				tempElectronicItem->setItemDescription(tempItemDescription);
-				tempElectronicItem->setQuantity(tempQuantity);
-				tempElectronicItem->setCustomerCost(tempCustomerCost);
-				tempElectronicItem->setVendorCost(tempVendorCost);
-				tempElectronicItem->setTaxExempt(tempTaxExempt);
+				for (int i = 0; i < tempQuantity; i++)
+				{
+					tempElectronicItem->setOrderNumber(tempOrderNumber);
+					tempElectronicItem->setItemNumber(tempItemNumber);
+					tempElectronicItem->setItemDescription(tempItemDescription);
+					tempElectronicItem->setQuantity(tempQuantity);
+					tempElectronicItem->setCustomerCost(tempCustomerCost);
+					tempElectronicItem->setVendorCost(tempVendorCost);
+					tempElectronicItem->setTaxExempt(tempTaxExempt);
 
-				tempElectronicItem->setElectronicType(tempType);
-				tempElectronicItem->setWarrantyMonths(tempWarrantyMonths);
+					tempElectronicItem->setElectronicType(tempType);
+					tempElectronicItem->setWarrantyMonths(tempWarrantyMonths);
+
+				}//for
 
 				ItemsInOrder.push_back(tempElectronicItem);
 			}//if
@@ -237,7 +244,7 @@ double Order::getTotalOfOrder(void)
 {
 	double total;
 
-	cout << setprecision(2);
+	cout << setprecision(2) << showpoint << fixed;
 
 	for (unsigned int i = 0; i < ItemsInOrder.size(); i++)
 	{

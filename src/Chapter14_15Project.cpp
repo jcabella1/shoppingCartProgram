@@ -171,14 +171,23 @@ void readOrderFile(ifstream &inFile, vector<Order*> &theOrderVector, vector<Cust
 
 					theOrderVector.push_back(tempOrder);
 				}//if
+				// Eclipse was being very annoying with this error, so I commented this block of code out
+				// I do have the C++11 settings set up, however.
+//				else
+//				{
+//					Order *tempOrder = new Order(tempOrderNumber, nullptr);
+//
+//					tempOrder->setOrderDate(tempMonth, tempDay, tempYear);
+//
+//					theOrderVector.push_back(tempOrder);
+//				}
 
 			}//for
 	}//while
 
 }//readOrderFile
 
-//	TODO: Format print statements
-// 	TODO: Plug in items
+//	TODO: Somehow fix the object slicing so I can call the derived class functions
 // 	Prints all orders
 //
 void printAllOrders(vector<Order*> theOrderVector)
@@ -194,7 +203,7 @@ void printAllOrders(vector<Order*> theOrderVector)
 //
 void printOrder(Order* theOrderPointer, string theOrderNumber)
 {
-	cout << setprecision(2) << showpoint << fixed;
+
 		cout << endl;
 		cout << "========================================" << endl;
 		cout << right << setw(25) << "Order ID" << setw(15) << "Customer ID" << setw(15) << "Order Date" << setw(20) << "Customer" << endl;
@@ -216,7 +225,7 @@ void printOrder(Order* theOrderPointer, string theOrderNumber)
 			{
 				cout << right << setw(50) << theOrderPointer->getItemsInOrder()[i]->getItemNumber() << setw(25)
 						<< theOrderPointer->getItemsInOrder()[i]->getItemDescription() << setw(15)
-						<< theOrderPointer->getItemsInOrder()[i]->getCalories()
+//						<< theOrderPointer->getItemsInOrder()[i]->getCalories()
 						<< theOrderPointer->getItemsInOrder()[i]->getCustomerCost() << endl;
 			}//if
 			else { } // do nothing
@@ -233,7 +242,7 @@ void printOrder(Order* theOrderPointer, string theOrderNumber)
 			{
 				cout << right << setw(50) << theOrderPointer->getItemsInOrder()[i]->getItemNumber() << setw(25)
 					<< theOrderPointer->getItemsInOrder()[i]->getItemDescription() << setw(15)
-					<< theOrderPointer->getItemsInOrder()[i]->getISBNNumber() << setw(15)
+//					<< theOrderPointer->getItemsInOrder()[i]->getISBNNumber() << setw(15)
 					<< theOrderPointer->getItemsInOrder()[i]->getCustomerCost() << endl;
 			}
 			else { } //do nothing
@@ -252,7 +261,7 @@ void printOrder(Order* theOrderPointer, string theOrderNumber)
 			{
 				cout << right << setw(50) << theOrderPointer->getItemsInOrder()[i]->getItemNumber() << setw(25)
 					<< theOrderPointer->getItemsInOrder()[i]->getItemDescription() << setw(15)
-					<< theOrderPointer->getItemsInOrder()[i]->getWarrantyMonths() << setw(15)
+//					<< theOrderPointer->getItemsInOrder()[i]->getWarrantyMonths() << setw(15)
 					<< theOrderPointer->getItemsInOrder()[i]->getCustomerCost() << endl;
 			}
 			else { } //do nothing
