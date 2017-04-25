@@ -8,7 +8,7 @@
 #include "MediaItem.hpp"
 
 MediaItem::MediaItem() {
-	cout << "Creating media item" << endl;
+//	cout << "Creating media item" << endl;
 	AuthorName = "Unknown";
 	PublicationDate.setMonth(1);
 	PublicationDate.setDay(1);
@@ -17,7 +17,7 @@ MediaItem::MediaItem() {
 }
 
 MediaItem::~MediaItem() {
-	cout << "Deleting media item" << endl;
+//	cout << "Deleting media item" << endl;
 }//destructor
 
 string MediaItem::whoAmI(void)

@@ -14,12 +14,13 @@
 class FoodItem: public OrderItem {
 public:
 	FoodItem();
+	FoodItem(const OrderItem &);
 	virtual ~FoodItem();
 	virtual string whoAmI(void);
 
 	Date getExpirationDate(void);
 	void setExpirationDate(int month, int day, int year);
-	 virtual int getCalories(void);
+	int getCalories(void);
 	void setCalories(int);
 	int getFat(void);
 	void setFat(int);

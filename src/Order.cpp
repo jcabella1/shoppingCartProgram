@@ -12,7 +12,7 @@
 Order::Order() {
 //	OrderCustomer = nullptr;
 
-	cout << "Creating order" << endl;
+//	cout << "Creating order" << endl;
 	string foodItemsFile = "FoodItems.txt";
 	string mediaItemsFile = "MediaItems.txt";
 	string electronicItemsFile = "ElectronicItems.txt";
@@ -38,7 +38,7 @@ Order::Order(string orderNum, Customer *theCustomerPointer)
 	OrderCustomer = theCustomerPointer;
 	OrderNumber = orderNum;
 
-	cout << "Creating order" << endl;
+//	cout << "Creating order" << endl;
 	string foodItemsFile = "FoodItems.txt";
 	string mediaItemsFile = "MediaItems.txt";
 	string electronicItemsFile = "ElectronicItems.txt";
@@ -130,6 +130,7 @@ void Order::readFoodItems(ifstream &inFile)
 			if (tempOrderNumber == this->OrderNumber)
 			{
 				FoodItem *tempFoodItem = new FoodItem();
+
 				for (int i = 0; i < tempQuantity; i++)
 				{
 					tempFoodItem->setOrderNumber(tempOrderNumber);
@@ -140,6 +141,8 @@ void Order::readFoodItems(ifstream &inFile)
 					tempFoodItem->setVendorCost(tempVendorCost);
 					tempFoodItem->setTaxExempt(tempTaxExempt);
 
+					tempFoodItem->setCalories(tempCalories);
+					tempFoodItem->setFat(tempFat);
 					tempFoodItem->setExpirationDate(tempExpirationYear, tempExpirationMonth, tempExpirationDay);
 				}//for
 				ItemsInOrder.push_back(tempFoodItem);

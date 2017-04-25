@@ -75,12 +75,17 @@ int main(int argc, char *argv[]) {
 	//
 	readOrderFile(inputFile2, theOrders, theCustomers);
 
+	//
+	// Command line argument validation
+	//
 	if (argc == 1)
 	{
+		cout << "Order Report: " << endl;
 		printAllOrders(theOrders);
 	}//if
 	else if (argc == 2)
 	{
+		cout << "Order Report: " << endl;
 		for (unsigned int i = 0; i < theOrders.size(); i++)
 	 	{
 			if (theOrders[i]->getOrderNumber() == argv[1])
@@ -93,9 +98,8 @@ int main(int argc, char *argv[]) {
 	{
 		cout << "Error, you can only enter 2 arguments" << endl;
 		cout << "Program is ending, have a nice day" << endl;
-		cout << "Program ended with exit value: -1" << endl;
-
-		return -1;
+		cout << "Program ended with exit value: 1" << endl;
+		return 1;
 	}//else
 
 	//
@@ -119,6 +123,9 @@ int main(int argc, char *argv[]) {
 	return 0;
 }//main
 
+//
+// Read customers from a customer file
+//
 void readCustomerFile(ifstream & inFile, vector<Customer*> &theCustomerVector)
 {
 	while (inFile.good())
@@ -144,7 +151,7 @@ void readCustomerFile(ifstream & inFile, vector<Customer*> &theCustomerVector)
 }//readCustomerFile
 
 //
-// Read orders from the input stream
+// Read orders from the orders file
 //
 void readOrderFile(ifstream &inFile, vector<Order*> &theOrderVector, vector<Customer*> theCustomerVector)
 {
@@ -161,33 +168,42 @@ void readOrderFile(ifstream &inFile, vector<Order*> &theOrderVector, vector<Cust
 			//
 			//look for the customer ID in the customer vector and point to the customer
 			//
+			bool found;
+			Customer *tempCustomer;
 			for (unsigned int i = 0; i < theCustomerVector.size(); i++)
 			{
 				if (theCustomerVector[i]->getCustomerNumber() == tempCustomerID)
 				{
-					Order *tempOrder = new Order(tempOrderNumber, theCustomerVector[i]);
-
-					tempOrder->setOrderDate(tempMonth, tempDay, tempYear);
-
-					theOrderVector.push_back(tempOrder);
+					tempCustomer = theCustomerVector[i];
+					found = true;
 				}//if
-				// Eclipse was being very annoying with this error, so I commented this block of code out
-				// I do have the C++11 settings set up, however.
-//				else
-//				{
-//					Order *tempOrder = new Order(tempOrderNumber, nullptr);
-//
-//					tempOrder->setOrderDate(tempMonth, tempDay, tempYear);
-//
-//					theOrderVector.push_back(tempOrder);
-//				}
-
 			}//for
+
+			//
+			// If the customer is found, create new Order that points to that Customer
+			// If not found, assign nullptr to orderCustomer
+			//
+			if (found)
+			{
+				Order *tempOrder = new Order(tempOrderNumber, tempCustomer);
+
+				tempOrder->setOrderDate(tempMonth, tempDay, tempYear);
+
+				theOrderVector.push_back(tempOrder);
+			}//if
+			else
+			{
+				Order *tempOrder = new Order(tempOrderNumber, nullptr);
+
+				tempOrder->setOrderDate(tempMonth, tempDay, tempYear);
+
+				theOrderVector.push_back(tempOrder);
+			}//else
 	}//while
 
 }//readOrderFile
 
-//	TODO: Somehow fix the object slicing so I can call the derived class functions
+//
 // 	Prints all orders
 //
 void printAllOrders(vector<Order*> theOrderVector)
@@ -223,10 +239,11 @@ void printOrder(Order* theOrderPointer, string theOrderNumber)
 		{
 			if (theOrderPointer->getItemsInOrder()[i]->whoAmI() == "fooditem")
 			{
-				cout << right << setw(50) << theOrderPointer->getItemsInOrder()[i]->getItemNumber() << setw(25)
-						<< theOrderPointer->getItemsInOrder()[i]->getItemDescription() << setw(15)
-//						<< theOrderPointer->getItemsInOrder()[i]->getCalories()
-						<< theOrderPointer->getItemsInOrder()[i]->getCustomerCost() << endl;
+				FoodItem *FoodItemPointer = static_cast<FoodItem*>(theOrderPointer->getItemsInOrder()[i]);
+				cout << right << setw(50) << FoodItemPointer->getItemNumber() << setw(25)
+						<< FoodItemPointer->getItemDescription() << setw(15)
+						<< FoodItemPointer->getCalories() << setw(15)
+						<< FoodItemPointer->getCustomerCost() << endl;
 			}//if
 			else { } // do nothing
 		}//for
@@ -240,11 +257,13 @@ void printOrder(Order* theOrderPointer, string theOrderNumber)
 		{
 			if (theOrderPointer->getItemsInOrder()[i]->whoAmI() == "mediaitem")
 			{
-				cout << right << setw(50) << theOrderPointer->getItemsInOrder()[i]->getItemNumber() << setw(25)
-					<< theOrderPointer->getItemsInOrder()[i]->getItemDescription() << setw(15)
-//					<< theOrderPointer->getItemsInOrder()[i]->getISBNNumber() << setw(15)
-					<< theOrderPointer->getItemsInOrder()[i]->getCustomerCost() << endl;
-			}
+				MediaItem *MediaItemPointer = static_cast<MediaItem*>(theOrderPointer->getItemsInOrder()[i]);
+
+				cout << right << setw(50) << MediaItemPointer->getItemNumber() << setw(25)
+					<< MediaItemPointer->getItemDescription() << setw(15)
+					<< MediaItemPointer->getISBNNumber() << setw(15)
+					<< MediaItemPointer->getCustomerCost() << endl;
+			}//if
 			else { } //do nothing
 
 		}//for
@@ -259,11 +278,12 @@ void printOrder(Order* theOrderPointer, string theOrderNumber)
 		{
 			if (theOrderPointer->getItemsInOrder()[i]->whoAmI() == "electronicitem")
 			{
-				cout << right << setw(50) << theOrderPointer->getItemsInOrder()[i]->getItemNumber() << setw(25)
-					<< theOrderPointer->getItemsInOrder()[i]->getItemDescription() << setw(15)
-//					<< theOrderPointer->getItemsInOrder()[i]->getWarrantyMonths() << setw(15)
-					<< theOrderPointer->getItemsInOrder()[i]->getCustomerCost() << endl;
-			}
+				ElectronicItem *ElectronicItemPointer = static_cast<ElectronicItem*>(theOrderPointer->getItemsInOrder()[i]);
+				cout << right << setw(50) << ElectronicItemPointer->getItemNumber() << setw(25)
+					<< ElectronicItemPointer->getItemDescription() << setw(15)
+					<< ElectronicItemPointer->getWarrantyMonths() << setw(15)
+					<< ElectronicItemPointer->getCustomerCost() << endl;
+			}//if
 			else { } //do nothing
 
 		}//for

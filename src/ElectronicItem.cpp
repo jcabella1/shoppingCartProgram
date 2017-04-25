@@ -9,14 +9,14 @@
 
 ElectronicItem::ElectronicItem()
 {
-	cout << "Creating electronic item" << endl;
+//	cout << "Creating electronic item" << endl;
 	WarrantyMonths = 0;
 	Type = TV;
 }//default constructor
 
 ElectronicItem::~ElectronicItem()
 {
-	cout << "Deleting electronic item" << endl;
+//	cout << "Deleting electronic item" << endl;
 
 }//destructor
 
