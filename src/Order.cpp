@@ -131,8 +131,8 @@ void Order::readFoodItems(ifstream &inFile)
 			{
 				FoodItem *tempFoodItem = new FoodItem();
 
-				for (int i = 0; i < tempQuantity; i++)
-				{
+//				for (int i = 0; i < tempQuantity; i++)
+//				{
 					tempFoodItem->setOrderNumber(tempOrderNumber);
 					tempFoodItem->setItemNumber(tempItemNumber);
 					tempFoodItem->setItemDescription(tempItemDescription);
@@ -144,7 +144,7 @@ void Order::readFoodItems(ifstream &inFile)
 					tempFoodItem->setCalories(tempCalories);
 					tempFoodItem->setFat(tempFat);
 					tempFoodItem->setExpirationDate(tempExpirationYear, tempExpirationMonth, tempExpirationDay);
-				}//for
+//				}//for
 				ItemsInOrder.push_back(tempFoodItem);
 			}//if
 	}//while
@@ -180,8 +180,8 @@ void Order::readMediaItems(ifstream &inFile)
 			{
 				MediaItem *tempMediaItem = new MediaItem();
 
-				for (int i = 0; i < tempQuantity; i++)
-				{
+//				for (int i = 0; i < tempQuantity; i++)
+//				{
 					tempMediaItem->setOrderNumber(tempOrderNumber);
 					tempMediaItem->setItemNumber(tempItemNumber);
 					tempMediaItem->setItemDescription(tempItemDescription);
@@ -194,7 +194,7 @@ void Order::readMediaItems(ifstream &inFile)
 					tempMediaItem->setPublicationDate(tempMonth, tempDay, tempYear);
 					tempMediaItem->setISBNNumber(tempISBN);
 
-				}//for
+//				}//for
 
 				ItemsInOrder.push_back(tempMediaItem);
 			}//if
@@ -223,8 +223,8 @@ void Order::readElectronicItems(ifstream &inFile)
 			{
 				ElectronicItem *tempElectronicItem = new ElectronicItem();
 
-				for (int i = 0; i < tempQuantity; i++)
-				{
+//				for (int i = 0; i < tempQuantity; i++)
+//				{
 					tempElectronicItem->setOrderNumber(tempOrderNumber);
 					tempElectronicItem->setItemNumber(tempItemNumber);
 					tempElectronicItem->setItemDescription(tempItemDescription);
@@ -236,7 +236,7 @@ void Order::readElectronicItems(ifstream &inFile)
 					tempElectronicItem->setElectronicType(tempType);
 					tempElectronicItem->setWarrantyMonths(tempWarrantyMonths);
 
-				}//for
+//				}//for
 
 				ItemsInOrder.push_back(tempElectronicItem);
 			}//if
