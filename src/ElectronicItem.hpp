@@ -10,9 +10,12 @@
 
 #include "OrderItem.hpp"
 
-enum Type
+enum ElectronicType
 {
-
+	TV,
+	PS4,
+	DVDPlayer,
+	PHONE
 };
 
 class ElectronicItem: public OrderItem {
@@ -23,8 +26,12 @@ public:
 
 	int getWarrantyMonths(void);
 	void setWarrantyMonths(int);
+	ElectronicType getElectronicType(void);
+	void setElectronicType(ElectronicType);
+	void setElectronicType(string);
 private:
 	int WarrantyMonths;
+	ElectronicType Type;
 };
 
 #endif /* ELECTRONICITEM_HPP_ */

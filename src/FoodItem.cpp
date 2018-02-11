@@ -8,6 +8,7 @@
 #include "FoodItem.hpp"
 
 FoodItem::FoodItem() {
+	cout << "Creating food item" << endl;
 	Calories = 0;
 	Fat = 0;
 	ExpirationDate.setDay(1);
@@ -16,11 +17,7 @@ FoodItem::FoodItem() {
 }//default constructor
 
 FoodItem::~FoodItem() {
-	Calories = 0;
-	Fat = 0;
-	ExpirationDate.setDay(1);
-	ExpirationDate.setMonth(1);
-	ExpirationDate.setYear(1970);
+	cout << "Deleting food item" << endl;
 }//destructor
 
 string FoodItem::whoAmI(void)

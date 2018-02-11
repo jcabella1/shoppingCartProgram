@@ -10,7 +10,6 @@
 
 #include <iostream>
 #include <vector>
-#include "Order.hpp"
 
 using namespace std;
 
@@ -28,20 +27,20 @@ public:
 	void setItemDescription(string);
 	int getQuantity(void);
 	void setQuantity(int);
-	float getCustomerCost(void);
-	void setCustomerCost(float);
-	float getVendorCost(void);
-	void setVendorCost(float);
+	double getCustomerCost(void);
+	void setCustomerCost(double);
+	double getVendorCost(void);
+	void setVendorCost(double);
 	bool getTaxExempt(void);
-	void setTaxExempt(bool);
+	void setTaxExempt(char);
 
 private:
 	string OrderNumber;
 	string ItemNumber;
 	string ItemDescription;
 	int Quantity;
-	float CustomerCost;
-	float VendorCost;
+	double CustomerCost;
+	double VendorCost;
 	bool TaxExempt;
 };
 

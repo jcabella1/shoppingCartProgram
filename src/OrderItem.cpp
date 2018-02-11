@@ -61,27 +61,34 @@ void OrderItem::setQuantity(int anInt)
 {
 	Quantity = anInt;
 }//setQuantity
-float OrderItem::getCustomerCost(void)
+double OrderItem::getCustomerCost(void)
 {
 	return CustomerCost;
 }//getCustomerCost
-void OrderItem::setCustomerCost(float aFloat)
+void OrderItem::setCustomerCost(double aDouble)
 {
-	CustomerCost = aFloat;
+	CustomerCost = aDouble;
 }//getCustomerCost
-float OrderItem::getVendorCost(void)
+double OrderItem::getVendorCost(void)
 {
 	return VendorCost;
 }//getVendorCost
-void OrderItem::setVendorCost(float aFloat)
+void OrderItem::setVendorCost(double aDouble)
 {
-	VendorCost = aFloat;
+	VendorCost = aDouble;
 }//setVendorCost
 bool OrderItem::getTaxExempt(void)
 {
 	return TaxExempt;
 }//getTaxExempt
-void OrderItem::setTaxExempt(bool aBool)
+void OrderItem::setTaxExempt(char aChar)
 {
-	TaxExempt = aBool;
+	if (aChar == 'Y')
+	{
+		TaxExempt = true;
+	}//if
+	else
+	{
+		TaxExempt = false;
+	}//else
 }//setTaxExempt

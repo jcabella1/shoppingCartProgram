@@ -11,6 +11,7 @@
 
 
 Customer::Customer() {
+	cout << "Creating customer" << endl;
 	this->CustomerNumber = "Unknown";
 	this->CustomerName = "Unknown";
 	this->email = "Unknown";
@@ -21,6 +22,7 @@ Customer::Customer() {
 }//default constructor
 
 Customer::~Customer() {
+	cout << "Deleting customer" << endl;
 	this->CustomerNumber = "X";
 	this->CustomerName = "X";
 	this->email = "X";
